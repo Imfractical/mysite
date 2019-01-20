@@ -5,6 +5,9 @@ from django.utils import timezone
 
 
 class Menu(models.Model):
+    class Meta:
+        ordering = ['expiration_date', 'created_date', 'season']
+
     items = models.ManyToManyField('Item', related_name='items')
     season = models.CharField(max_length=20)
     created_date = models.DateTimeField(default=timezone.now)

@@ -1,12 +1,12 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import Http404
-from django.utils import timezone
-from operator import attrgetter
 from datetime import datetime
-from django.core.exceptions import ObjectDoesNotExist
 
-from .models import Menu, Item
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+
 from .forms import MenuForm
+from .models import Item, Menu
 
 
 def create_menu(request):
@@ -23,13 +23,7 @@ def create_menu(request):
 
 
 def list_menus(request):
-    all_menus = Menu.objects.all()
-    menus = []
-    for menu in all_menus:
-        if menu.expiration_date >= timezone.now():
-            menus.append(menu)
-
-    menus = sorted(menus, key=attrgetter('expiration_date'))
+    menus = Menu.objects.filter(expiration_date__gte=timezone.now())
 
     return render(request, 'menu/list_menus.html', {'menus': menus})
 
