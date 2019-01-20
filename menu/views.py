@@ -10,21 +10,19 @@ from .forms import MenuForm
 
 
 def create_menu(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = MenuForm(request.POST)
         if form.is_valid():
-            menu = form.save(commit=False)
-            menu.created_date = timezone.now()
-            menu.save()
+            menu = form.save()
 
             return redirect('menu_detail', pk=menu.pk)
     else:
         form = MenuForm()
 
-    return render(request, 'menu/menu_edit.html', {'form': form})
+    return render(request, 'menu/create_menu.html', {'form': form})
 
 
-def list_menu(request):
+def list_menus(request):
     all_menus = Menu.objects.all()
     menus = []
     for menu in all_menus:
@@ -33,19 +31,19 @@ def list_menu(request):
 
     menus = sorted(menus, key=attrgetter('expiration_date'))
 
-    return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
+    return render(request, 'menu/list_menus.html', {'menus': menus})
 
 
-def detail_menu(request, pk):
-    menu = Menu.objects.get(pk=pk)
+def detail_menu(request, menu_pk):
+    menu = Menu.objects.get(pk=menu_pk)
 
-    return render(request, 'menu/menu_detail.html', {'menu': menu})
+    return render(request, 'menu/detail_menu.html', {'menu': menu})
 
 
-def edit_menu(request, pk):
-    menu = get_object_or_404(Menu, pk=pk)
+def edit_menu(request, menu_pk):
+    menu = get_object_or_404(Menu, pk=menu_pk)
     items = Item.objects.all()
-    if request.method == "POST":
+    if request.method == 'POST':
         menu.season = request.POST.get('season', '')
         menu.expiration_date = datetime.strptime(
             request.POST.get('expiration_date', ''),
@@ -54,15 +52,15 @@ def edit_menu(request, pk):
         menu.items = request.POST.get('items', '')
         menu.save()
 
-    return render(request, 'menu/change_menu.html', {
+    return render(request, 'menu/edit_menu.html', {
         'menu': menu,
         'items': items,
     })
 
 
-def detail_item(request, pk):
+def detail_item(request, item_pk):
     try:
-        item = Item.objects.get(pk=pk)
+        item = Item.objects.get(pk=item_pk)
     except ObjectDoesNotExist:
         raise Http404
 
