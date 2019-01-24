@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -23,7 +24,10 @@ def create_menu(request):
 
 
 def list_menus(request):
-    menus = Menu.objects.filter(expiration_date__gte=timezone.now())
+    menus = Menu.objects.filter(
+        Q(expiration_date__gte=timezone.now())
+        | Q(expiration_date__isnull=True)
+    )
 
     return render(request, 'menu/list_menus.html', {'menus': menus})
 
