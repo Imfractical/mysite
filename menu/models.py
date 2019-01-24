@@ -19,7 +19,7 @@ class Menu(models.Model):
 
 class Item(models.Model):
     chef = models.ForeignKey('auth.User', models.CASCADE)
-    ingredients = models.ManyToManyField('Ingredient')
+    ingredients = models.ManyToManyField('Ingredient', related_name='ingredients')
     created_date = models.DateTimeField(default=timezone.now)
     name = models.CharField(max_length=200)
     description = models.TextField()
