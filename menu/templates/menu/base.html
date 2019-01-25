@@ -18,8 +18,14 @@
             <h1><a href="/">Soda Fountain</a></h1>
         </div>
         <div class="content container">
-            {% block content %}
-            {% endblock %}
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="post">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

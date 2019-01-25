@@ -1,0 +1,14 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <a class="btn btn-default" href="{% url 'menu:edit_dish' dish.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    {% endif %}
+    <h1>{{ dish.name }}</h1>
+    <p><strong>Head Chef:</strong> {{ dish.chef }}</p>
+    <p>{{ dish.description }}</p>
+    <p><strong>Ingredients: </strong>{{ dish.ingredients.all|join:", " }}</p>
+    {% if dish.standard %}
+        <p><em>This dish is available year-round</em></p>
+    {% endif %}
+{% endblock %}

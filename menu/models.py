@@ -1,26 +1,27 @@
 """menu app model definitions"""
 
+from datetime import datetime
+
 from django.db import models
-from django.utils import timezone
 
 
 class Menu(models.Model):
+    dishes = models.ManyToManyField('Dish', related_name='dishes')
+    season = models.CharField(max_length=200)
+    created_date = models.DateField(default=datetime.today)
+    expiration_date = models.DateField(blank=True, null=True)
+
     class Meta:
         ordering = ['expiration_date', 'created_date', 'season']
-
-    items = models.ManyToManyField('Item', related_name='items')
-    season = models.CharField(max_length=20)
-    created_date = models.DateTimeField(default=timezone.now)
-    expiration_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.season
 
 
-class Item(models.Model):
+class Dish(models.Model):
     chef = models.ForeignKey('auth.User', models.CASCADE)
     ingredients = models.ManyToManyField('Ingredient', related_name='ingredients')
-    created_date = models.DateTimeField(default=timezone.now)
+    created_date = models.DateField(default=datetime.today)
     name = models.CharField(max_length=200)
     description = models.TextField()
     standard = models.BooleanField(default=False)
@@ -30,6 +31,7 @@ class Item(models.Model):
 
 
 class Ingredient(models.Model):
+    dish = models.ForeignKey('Dish', models.CASCADE)
     name = models.CharField(max_length=200)
 
     def __str__(self):

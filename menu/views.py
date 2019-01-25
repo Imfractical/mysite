@@ -1,13 +1,11 @@
 from datetime import datetime
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .forms import MenuForm
-from .models import Item, Menu
+from .models import Dish, Menu
 
 
 def create_menu(request):
@@ -40,26 +38,23 @@ def detail_menu(request, menu_pk):
 
 def edit_menu(request, menu_pk):
     menu = get_object_or_404(Menu, pk=menu_pk)
-    items = Item.objects.all()
+    dishes = Dish.objects.all()
     if request.method == 'POST':
         menu.season = request.POST.get('season', '')
         menu.expiration_date = datetime.strptime(
             request.POST.get('expiration_date', ''),
             '%m/%d/%Y',
         )
-        menu.items = request.POST.get('items', '')
+        menu.dishes = request.POST.get('dishes', '')
         menu.save()
 
     return render(request, 'menu/edit_menu.html', {
         'menu': menu,
-        'items': items,
+        'dishes': dishes,
     })
 
 
-def detail_item(request, item_pk):
-    try:
-        item = Item.objects.get(pk=item_pk)
-    except ObjectDoesNotExist:
-        raise Http404
+def detail_dish(request, dish_pk):
+    dish = get_object_or_404(Dish, pk=dish_pk)
 
-    return render(request, 'menu/detail_item.html', {'item': item})
+    return render(request, 'menu/detail_dish.html', {'dish': dish})
