@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.models import BaseInlineFormSet, inlineformset_factory
 
 from .models import Dish, Ingredient, Menu
 
@@ -18,4 +19,4 @@ class DishForm(forms.ModelForm):
 class IngredientForm(forms.ModelForm):
     class Meta:
         model = Ingredient
-        fields = ('name')
+        fields = ('name',)

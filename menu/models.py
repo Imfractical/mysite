@@ -31,7 +31,6 @@ class Dish(models.Model):
 
 
 class Ingredient(models.Model):
-    dish = models.ForeignKey('Dish', models.CASCADE)
     name = models.CharField(max_length=200)
 
     def __str__(self):

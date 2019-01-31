@@ -1,0 +1,19 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+    <h1>Chef login</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="name">Username</label>
+            <input type="text" id="username" name="username">
+        </div>
+        <div>
+            <label for="mail">Password</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <div>
+            <button type="submit">Login</button>
+        </div>
+    </form>
+{% endblock %}
