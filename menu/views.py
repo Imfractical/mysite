@@ -1,10 +1,9 @@
-from datetime import datetime
+import datetime
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils import timezone
 
 from .forms import DishForm, IngredientForm, MenuForm
 from .models import Dish, Ingredient, Menu
@@ -74,10 +73,9 @@ def create_ingredient(request):
 
 
 def list_menus(request):
-    menus = Menu.objects.filter(
-        Q(expiration_date__gte=timezone.now())
-        | Q(expiration_date__isnull=True)
-    )
+    menus = Menu.objects.exclude(
+        expiration_date__lte=datetime.date.today()
+    ).prefetch_related('dishes')
 
     return render(request, 'menu/list_menus.html', {'menus': menus})
 
