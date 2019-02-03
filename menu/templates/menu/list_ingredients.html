@@ -1,0 +1,12 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+    {% for ingredient in ingredients %}
+        <h1>
+            {% if user.is_authenticated %}
+                <a class="btn btn-default" href="{% url 'menu:edit_ingredient' ingredient.pk %}">Edit</a>
+            {% endif %}
+            {{ ingredient.name }}
+        </h1>
+    {% endfor %}
+{% endblock %}

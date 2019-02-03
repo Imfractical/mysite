@@ -15,7 +15,7 @@
             {% if user.is_authenticated %}
                 Hello chef!
                 <a href="{% url 'menu:logout' %}" class="top-menu">Logout</a>
-                <a href="{% url 'menu:create_menu' %}" class="top-menu">Create menu<span class="glyphicon glyphicon-plus"></span></a>
+                <a href="{% url 'menu:create_menu' %}" class="top-menu">Create menu</a>
                 <a href="{% url 'menu:create_dish' %}" class="top-menu">Create dish</a>
                 <a href="{% url 'menu:create_ingredient' %}" class="top-menu">Create ingredient</a>
             {% else %}

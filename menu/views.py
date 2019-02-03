@@ -38,7 +38,7 @@ def create_menu(request):
         if form.is_valid():
             menu = form.save()
 
-            return redirect('menu:detail_menu', id=menu.pk)
+            return redirect('menu:detail_menu', menu_pk=menu.pk)
     else:
         form = MenuForm()
 
@@ -53,7 +53,7 @@ def create_dish(request):
             dish.chef = request.user
             dish.save()
 
-            return redirect('menu:detail_dish', id=dish.pk)
+            return redirect('menu:detail_dish', dish_pk=dish.pk)
     else:
         form = DishForm()
 
@@ -82,31 +82,61 @@ def list_menus(request):
     return render(request, 'menu/list_menus.html', {'menus': menus})
 
 
+def list_ingredients(request):
+    ingredients = Ingredient.objects.all()
+
+    return render(request, 'menu/list_ingredients.html', {'ingredients': ingredients})
+
+
 def detail_menu(request, menu_pk):
     menu = get_object_or_404(Menu, id=menu_pk)
 
     return render(request, 'menu/detail_menu.html', {'menu': menu})
 
 
-def edit_menu(request, menu_pk):
-    menu = get_object_or_404(Menu, id=menu_pk)
-    dishes = Dish.objects.all()
-    if request.method == 'POST':
-        menu.season = request.POST.get('season', '')
-        menu.expiration_date = datetime.strptime(
-            request.POST.get('expiration_date', ''),
-            '%m/%d/%Y',
-        )
-        menu.dishes = request.POST.get('dishes', '')
-        menu.save()
-
-    return render(request, 'menu/edit_menu.html', {
-        'menu': menu,
-        'dishes': dishes,
-    })
-
-
 def detail_dish(request, dish_pk):
     dish = get_object_or_404(Dish, id=dish_pk)
 
     return render(request, 'menu/detail_dish.html', {'dish': dish})
+
+
+def edit_menu(request, menu_pk):
+    menu = get_object_or_404(Menu, id=menu_pk)
+    if request.method == 'POST':
+        form = MenuForm(request.POST, instance=menu)
+        if form.is_valid():
+            menu = form.save()
+
+            return redirect('menu:detail_menu', menu_pk=menu_pk)
+    else:
+        form = MenuForm(instance=menu)
+
+    return render(request, 'menu/edit_menu.html', {'form': form})
+
+
+def edit_dish(request, dish_pk):
+    dish = get_object_or_404(Dish, id=dish_pk)
+    if request.method == 'POST':
+        form = DishForm(request.POST, instance=dish)
+        if form.is_valid():
+            dish = form.save()
+
+            return redirect('dish:detail_dish', dish_pk=dish_pk)
+    else:
+        form = DishForm(instance=dish)
+
+    return render(request, 'menu/edit_dish.html', {'form': form})
+
+
+def edit_ingredient(request, ingredient_pk):
+    ingredient = get_object_or_404(Ingredient, id=ingredient_pk)
+    if request.method == 'POST':
+        form = IngredientForm(request.POST, instance=ingredient)
+        if form.is_valid():
+            ingredient = form.save()
+
+            return redirect('ingredient:detail_ingredient', ingredient_pk=ingredient_pk)
+    else:
+        form = IngredientForm(instance=ingredient)
+
+    return render(request, 'menu/edit_ingredient.html', {'form': form})
