@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .forms import DishForm, IngredientForm, MenuForm
-from .models import Dish, Menu
+from .models import Dish, Ingredient, Menu
 
 
 def signin(request):
@@ -101,7 +101,7 @@ def detail_dish(request, dish_pk):
 
 
 def edit_menu(request, menu_pk):
-    menu = get_object_or_404(Menu, id=menu_pk)
+    menu = get_object_or_404(Menu, id=menu_pk).prefetch_related('dishes')
     if request.method == 'POST':
         form = MenuForm(request.POST, instance=menu)
         if form.is_valid():
@@ -115,13 +115,13 @@ def edit_menu(request, menu_pk):
 
 
 def edit_dish(request, dish_pk):
-    dish = get_object_or_404(Dish, id=dish_pk)
+    dish = get_object_or_404(Dish, id=dish_pk).select_related('chef')
     if request.method == 'POST':
         form = DishForm(request.POST, instance=dish)
         if form.is_valid():
             dish = form.save()
 
-            return redirect('dish:detail_dish', dish_pk=dish_pk)
+            return redirect('menu:detail_dish', dish_pk=dish_pk)
     else:
         form = DishForm(instance=dish)
 
@@ -135,7 +135,7 @@ def edit_ingredient(request, ingredient_pk):
         if form.is_valid():
             ingredient = form.save()
 
-            return redirect('ingredient:detail_ingredient', ingredient_pk=ingredient_pk)
+            return redirect('menu:detail_ingredient', ingredient_pk=ingredient_pk)
     else:
         form = IngredientForm(instance=ingredient)
 

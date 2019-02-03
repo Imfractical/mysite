@@ -18,6 +18,7 @@
                 <a href="{% url 'menu:create_menu' %}" class="top-menu">Create menu</a>
                 <a href="{% url 'menu:create_dish' %}" class="top-menu">Create dish</a>
                 <a href="{% url 'menu:create_ingredient' %}" class="top-menu">Create ingredient</a>
+                <a href="{% url 'menu:list_ingredients' %}" class="top-menu">List ingredients</a>
             {% else %}
                 <a href="{% url 'menu:login' %}">Chef login</a>
             {% endif %}
