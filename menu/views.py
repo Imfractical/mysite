@@ -101,7 +101,7 @@ def detail_dish(request, dish_pk):
 
 
 def edit_menu(request, menu_pk):
-    menu = get_object_or_404(Menu, id=menu_pk).prefetch_related('dishes')
+    menu = get_object_or_404(Menu, id=menu_pk)
     if request.method == 'POST':
         form = MenuForm(request.POST, instance=menu)
         if form.is_valid():
