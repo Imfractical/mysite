@@ -26,7 +26,7 @@ def signin(request):
 
 def signout(request):
     logout(request)
-    messages.success(request, "Goodbye!")
+    messages.success(request, 'Goodbye!')
 
     return redirect('menu:list')
 
@@ -113,7 +113,7 @@ def edit_menu(request, menu_pk):
 
 
 def edit_dish(request, dish_pk):
-    dish = get_object_or_404(Dish, id=dish_pk).select_related('chef')
+    dish = get_object_or_404(Dish, id=dish_pk)
     if request.method == 'POST':
         form = DishForm(request.POST, instance=dish)
         if form.is_valid():
@@ -133,7 +133,7 @@ def edit_ingredient(request, ingredient_pk):
         if form.is_valid():
             ingredient = form.save()
 
-            return redirect('menu:detail_ingredient', ingredient_pk=ingredient_pk)
+            return redirect('menu:list_ingredients', ingredient_pk=ingredient_pk)
     else:
         form = IngredientForm(instance=ingredient)
 
