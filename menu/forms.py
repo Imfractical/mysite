@@ -12,8 +12,9 @@ class MenuForm(forms.ModelForm):
 
     def clean_expiration_date(self):
         date = self.cleaned_data['expiration_date']
-        if date <= datetime.date.today():
-            raise forms.ValidationError('Expiration date must be in the future!')
+        if date:
+            if date <= datetime.date.today():
+                raise forms.ValidationError('Expiration date must be in the future!')
 
         return date
 

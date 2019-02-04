@@ -16,7 +16,7 @@ def signin(request):
         if user is not None:
             login(request, user)
             messages.success(request, "Welcome, {}!".format(user.first_name))
-            return redirect('menu:list')
+            return redirect('menu:list_menus')
         else:
             messages.error("Invalid login")
 
@@ -27,7 +27,7 @@ def signout(request):
     logout(request)
     messages.success(request, 'Goodbye!')
 
-    return redirect('menu:list')
+    return redirect('menu:list_menus')
 
 
 def create_menu(request):
@@ -132,7 +132,7 @@ def edit_ingredient(request, ingredient_pk):
         if form.is_valid():
             ingredient = form.save()
 
-            return redirect('menu:list_ingredients', ingredient_pk=ingredient_pk)
+            return redirect('menu:list_ingredients')
     else:
         form = IngredientForm(instance=ingredient)
 
