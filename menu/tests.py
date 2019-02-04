@@ -58,6 +58,10 @@ class MenuTests(TestCase):
             'dishes': [Dish.objects.get(name='Fruity Fish')],
             'expiration_date': datetime.date(year=1980, month=1, day=1),
         })
-        menu1.save()
-
+        menu2 = MenuForm(data={
+            'season': 'Smash Mouth',
+            'dishes': [Dish.objects.get(name='Fruity Fish'), Dish.objects.get(name='Fishie')],
+            'expiration_date': datetime.date(year=2030, month=1, day=1),
+        })
         self.assertFalse(menu1.is_valid())
+        self.assertTrue(menu2.is_valid())

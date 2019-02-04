@@ -2,7 +2,6 @@ import datetime
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import DishForm, IngredientForm, MenuForm
@@ -63,7 +62,7 @@ def create_ingredient(request):
     if request.method == 'POST':
         form = IngredientForm(request.POST)
         if form.is_valid():
-            ingredient = form.save()
+            form.save()
 
             return redirect('menu:create_ingredient')
     else:
